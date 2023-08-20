@@ -45,13 +45,6 @@ jobs:
           path: ./target/${{ matrix.toolchain }}/release/algorithms-and-data-structures
           if-no-files-found: error
 
-      - name: Upload manpages artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: manpages
-          path: ./target/${{ matrix.toolchain }}/release/manpages
-          if-no-files-found: error
-
       - name: Upload completions artifact
         uses: actions/upload-artifact@v3
         with:
