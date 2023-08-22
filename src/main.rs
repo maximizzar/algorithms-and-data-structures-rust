@@ -1,3 +1,5 @@
+use std::cmp::min;
+use std::mem::swap;
 
 fn main() {
     const LARGEST_VALUE: usize = 10000;
@@ -26,9 +28,9 @@ fn main() {
     {
         let mut vector = master_vector.clone();
         let start = std::time::Instant::now();
-        println!("{:?}", merge_sort(&mut vector));
+        //println!("{:?}", merge_sort(&mut vector));
         let duration = start.elapsed();
-        println!("Time elapsed in merge_sort() is: {:?}", duration);
+        //println!("Time elapsed in merge_sort() is: {:?}", duration);
     }
     {
         let mut vector = master_vector.clone();
@@ -36,6 +38,13 @@ fn main() {
         radix_sort(&mut vector,LARGEST_VALUE);
         let duration = start.elapsed();
         println!("Time elapsed in radix_sort() is: {:?}", duration);
+    }
+    {
+        let mut vector = master_vector.clone();
+        let start = std::time::Instant::now();
+        selection_sort(&mut vector);
+        let duration = start.elapsed();
+        println!("Time elapsed in selection_sort() is: {:?}", duration);
     }
 }
 
@@ -139,8 +148,6 @@ fn merge_sort(mut vector: &mut Vec<i64>) -> Vec<i64> {
     }
 }
 
-
-
 fn radix_sort(vector: &mut Vec<i64>, largest_value: usize) -> Vec<i64> {
     let largest_power_of_ten = largest_value - largest_value % 10;
     let largest_power: i64 = (f64::log(largest_power_of_ten as f64, 10.0) as i64) + 1;
@@ -169,4 +176,22 @@ fn radix_sort(vector: &mut Vec<i64>, largest_value: usize) -> Vec<i64> {
         }
     }
     return vector.to_owned();
+}
+
+fn selection_sort(mut vector: &mut Vec<i64>) -> &mut Vec<i64> {
+    let highest_index = vector.len();
+    let mut insertion_index: usize = 0;
+
+    while insertion_index < highest_index {
+        let mut min_position = insertion_index;
+
+        for index in (insertion_index + 1)..highest_index {
+            if vector[index] < vector[min_position] {
+                min_position = index;
+            }
+        }
+        vector.swap(min_position,insertion_index);
+        insertion_index += 1;
+    }
+    return vector;
 }
