@@ -1,27 +1,27 @@
-use std::ops::Index;
-
-fn linear(array: &[i128], target: i128) -> usize {
+pub fn linear_search(array: &Vec<i64>, search_target: i64) -> Option<usize> {
 
     for i in 0..array.len() {
-        if array[i] == target {
-            return i;
+        if array[i] == search_target {
+            return Some(i);
         }
     }
-    panic!("Couldn't find target value in array!");
+    None
 }
+pub fn sentinel_linear_search(vector: &mut Vec<i64>, search_target: i64) -> Option<usize> {
+    let last_element: i64 = vector[vector.len() - 1];
+    let last_index: usize = vector.len().clone() - 1;
 
-fn sentinel_linear(vector: &mut Vec<i128>, target: i128) -> usize {
-    let last_element: i128 = vector[vector.len() - 1];
-    vector[vector.len() - 1] = target;
+    vector[last_index] = search_target;
     let mut i: usize = 0;
 
-    while vector[i] != target {
+    while vector[i] != search_target {
         i += 1;
     }
-    vector[vector.len() - 1] = last_element;
 
-    if i < vector.len() - 1 || last_element == target {
-        return i;
+    vector[last_index] = last_element;
+
+    if i < vector.len() - 1 || last_element == search_target {
+        return Some(i);
     }
-    panic!("Couldn't find target value in vector!");
+    None
 }

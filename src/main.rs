@@ -1,7 +1,28 @@
+mod search;
 
 fn main() {
     const LARGEST_VALUE: usize = 10000;
     let master_vector: Vec<i64> = vec![7138, 5993, 1106, 4619, 1821, 7534, 7863];
+
+    let search_target = 7863;
+    {
+        let vector = master_vector.clone();
+        let start = std::time::Instant::now();
+        search::linear_search(&vector, search_target);
+        let duration = start.elapsed();
+        println!("Time elapsed in linear_search() is: {:?}", duration);
+
+    }
+    {
+        let mut vector: Vec<i64> = master_vector.clone();
+        let start = std::time::Instant::now();
+        search::sentinel_linear_search(&mut vector, search_target);
+        let duration = start.elapsed();
+        println!("Time elapsed in sentinel_linear_search() is: {:?}", duration);
+    }
+
+    println!("...");
+
     {
         let vector= master_vector.clone();
         let start = std::time::Instant::now();
