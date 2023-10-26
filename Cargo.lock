@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "algorithms-and-data-structures"
+name = "algorithms-and-data-structures-rust"
 version = "0.1.0"

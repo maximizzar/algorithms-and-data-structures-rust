@@ -41,8 +41,8 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v3
         with:
-          name: algorithms-and-data-structures-linux-${{ matrix.arch }}
-          path: ./target/${{ matrix.toolchain }}/release/algorithms-and-data-structures
+          name: algorithms-and-data-structures-rust-linux-${{ matrix.arch }}
+          path: ./target/${{ matrix.toolchain }}/release/algorithms-and-data-structures-rust
           if-no-files-found: error
 
   build-mac:
@@ -74,8 +74,8 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v3
         with:
-          name: algorithms-and-data-structures-darwin-x86_64
-          path: ./target/x86_64-apple-darwin/release/algorithms-and-data-structures
+          name: algorithms-and-data-structures-rust-darwin-x86_64
+          path: ./target/x86_64-apple-darwin/release/algorithms-and-data-structures-rust
           if-no-files-found: error
 
   build-windows:
@@ -107,6 +107,6 @@ jobs:
       - name: Upload binary artifact
         uses: actions/upload-artifact@v3
         with:
-          name: algorithms-and-data-structures-windows-x86_64
-          path: ./target/x86_64-pc-windows-gnu/release/algorithms-and-data-structures.exe
+          name: algorithms-and-data-structures-rust-windows-x86_64
+          path: ./target/x86_64-pc-windows-gnu/release/algorithms-and-data-structures-rust.exe
           if-no-files-found: error

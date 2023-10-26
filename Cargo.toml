@@ -1,5 +1,5 @@
 [package]
-name = "algorithms-and-data-structures"
+name = "algorithms-and-data-structures-rust"
 version = "0.1.0"
 edition = "2021"
 
