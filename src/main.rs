@@ -1,4 +1,5 @@
 mod search;
+mod sparse_vector;
 
 fn main() {
     const LARGEST_VALUE: usize = 10000;
@@ -58,6 +59,7 @@ fn main() {
         let duration = start.elapsed();
         println!("Time elapsed in selection_sort() is: {:?}", duration);
     }
+    sparse_vector::sparse_vector();
 }
 
 fn bubble_sort(mut array: Vec<i64>) -> Vec<i64> {
