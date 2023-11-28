@@ -1,42 +1,52 @@
 pub struct SparseVector {
-    pub(crate) elements: Vec<Data>
+    pub elements: Vec<Element>
 }
-pub struct Data {
-    pub index: usize,
-    pub value: f64,
+pub struct Element {
+    index: usize,
+    value: f64,
 }
 
 impl SparseVector {
-    pub fn add(&mut self, data: Data) {
+    pub fn add(&mut self, index: usize, value: f64) {
+        let elements_index: Option<usize> =
+            SparseVector::get_vector_index(&self, index);
+
+        if elements_index.is_none() {
+            self.elements.push(Element{index, value});
+            return;
+        }
+
+        let elements_index: usize = elements_index.unwrap();
+        if self.elements[elements_index].index == index {
+            self.elements[elements_index].value = value;
+            return;
+        }
+        self.elements.insert(elements_index, Element{index, value});
+    }
+    pub fn delete(&mut self, index: usize) {
+        let elements_index: Option<usize> =
+            SparseVector::get_vector_index(&self, index);
+
+        if elements_index.is_none() {
+            return;
+        }
+        let elements_index: usize = elements_index.unwrap();
+
+        self.elements.remove(elements_index);
+    }
+    pub fn get(&self, index: usize) -> f64 {
         let vector_index: Option<usize> =
-            SparseVector::get_vector_index(&self, data.index);
+            SparseVector::get_vector_index(&self, index);
 
         if vector_index.is_none() {
-            self.elements.push(data);
-            return;
+            return 0.0;
         }
-
-        let elements_index: usize = vector_index.unwrap();
-        if self.elements[elements_index].index == data.index {
-            self.elements[elements_index].value = data.value;
-            return;
-        }
-        self.elements.insert(elements_index, data);
+        let vector_index = vector_index.unwrap();
+        return self.elements[vector_index].value;
     }
-    pub fn delete(&mut self, data_index: usize) {
-        let vector_index: Option<usize> =
-            SparseVector::get_vector_index(&self, data_index);
-
-        if vector_index.is_none() {
-            return;
-        }
-        let vector_index: usize = vector_index.unwrap();
-
-        self.elements.remove(vector_index);
-    }
-    fn get_vector_index(&self, data_index: usize) -> Option<usize> {
+    fn get_vector_index(&self, index: usize) -> Option<usize> {
         for i in 0 .. self.elements.len() {
-            if self.elements[i].index >= data_index {
+            if self.elements[i].index >= index {
                 return Some(i);
             }
         }
@@ -45,16 +55,6 @@ impl SparseVector {
     pub fn get_vector_length(&self) -> usize {
         let last_index = self.elements.len() - 1;
         return self.elements[last_index].index + 1;
-    }
-    pub fn get_element(&self, data_index: usize) -> f64 {
-        let vector_index: Option<usize> =
-            SparseVector::get_vector_index(&self, data_index);
-
-        if vector_index.is_none() {
-            return 0.0;
-        }
-        let vector_index = vector_index.unwrap();
-        return self.elements[vector_index].value;
     }
     pub fn to_string_sparse(&self) -> Option<String> {
         if self.elements.is_empty() {

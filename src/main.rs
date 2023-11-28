@@ -5,24 +5,20 @@ mod abstract_data_types;
 fn main() {
     {
         use abstract_data_types::SparseVector;
-        use abstract_data_types::Data;
 
         let mut sparse: SparseVector = SparseVector {
             elements: vec![],
         };
-        sparse.add(Data {index: 42, value: 25.16});
-        sparse.add(Data {index: 45, value: 29.16});
-        sparse.add(Data {index: 43, value: 27.16});
-        sparse.add(Data {index: 48, value: 32.16});
-        sparse.add(Data {index: 41, value: 24.16});
-        sparse.add(Data {index: 46, value: 30.16});
-        sparse.add(Data {index: 48, value: 32.16});
+        sparse.add(42,25.16);
+        sparse.add(45,29.16);
+        sparse.add(43,27.16);
+        sparse.add(48,32.16);
+        sparse.add(41,24.16);
+        sparse.add(46,30.16);
+        sparse.add(48,32.16);
 
         println!("{}", sparse.to_string_sparse().expect("Vector is empty"));
-        sparse.add(Data {
-            index: 44,
-            value: 64.56,
-        });
+        sparse.add(44,64.56);
         println!("{}", sparse.to_string_sparse().expect("Vector is empty"));
         sparse.delete(43);
 
