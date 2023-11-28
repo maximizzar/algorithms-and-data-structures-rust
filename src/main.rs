@@ -1,7 +1,38 @@
 mod search;
-mod sparse_vector;
+mod abstract_data_types;
+
 
 fn main() {
+    {
+        use abstract_data_types::SparseVector;
+        use abstract_data_types::Data;
+
+        let mut sparse: SparseVector = SparseVector {
+            elements: vec![],
+        };
+        sparse.add(Data {index: 42, value: 25.16});
+        sparse.add(Data {index: 45, value: 29.16});
+        sparse.add(Data {index: 43, value: 27.16});
+        sparse.add(Data {index: 48, value: 32.16});
+        sparse.add(Data {index: 41, value: 24.16});
+        sparse.add(Data {index: 46, value: 30.16});
+        sparse.add(Data {index: 48, value: 32.16});
+
+        println!("{}", sparse.to_string_sparse().expect("Vector is empty"));
+        sparse.add(Data {
+            index: 44,
+            value: 64.56,
+        });
+        println!("{}", sparse.to_string_sparse().expect("Vector is empty"));
+        sparse.delete(43);
+
+        println!("{}\n{}\n",
+                 sparse.to_string_sparse().expect("Vector is empty"),
+                 sparse.to_string_dense().expect("Vector is empty")
+        );
+    }
+
+
     const LARGEST_VALUE: usize = 10000;
     let master_vector: Vec<i64> = vec![7138, 5993, 1106, 4619, 1821, 7534, 7863];
 
@@ -59,7 +90,7 @@ fn main() {
         let duration = start.elapsed();
         println!("Time elapsed in selection_sort() is: {:?}", duration);
     }
-    sparse_vector::sparse_vector();
+
 }
 
 fn bubble_sort(mut array: Vec<i64>) -> Vec<i64> {
