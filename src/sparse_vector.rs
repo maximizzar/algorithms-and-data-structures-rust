@@ -5,38 +5,26 @@ pub(crate) struct Data {
 
 pub(crate) fn sparse_vector() {
     let mut sparse_vector:Vec<Data> = vec![];
-    sparse_vector.push(Data {
-        index: 41,
-        value: 24.16,
-    });
-    sparse_vector.push(Data {
-        index: 42,
-        value: 25.16,
-    });
-    sparse_vector.push(Data {
-        index: 43,
-        value: 27.16,
-    });
-    sparse_vector.push(Data {
-        index: 45,
-        value: 29.16,
-    });
-    sparse_vector.push(Data {
-        index: 46,
-        value: 30.16,
-    });
-    sparse_vector.push(Data {
-        index: 48,
-        value: 32.16,
-    });
-    println!("{}", to_string(&sparse_vector).expect("None"));
+    add(&mut sparse_vector, Data {index: 12, value: 25.16});
+    add(&mut sparse_vector, Data {index: 5, value: 29.16});
+    add(&mut sparse_vector, Data {index: 3, value: 27.16});
+    add(&mut sparse_vector, Data {index: 18, value: 32.16});
+    add(&mut sparse_vector, Data {index: 1, value: 24.16});
+    add(&mut sparse_vector, Data {index: 6, value: 30.16});
+    add(&mut sparse_vector, Data {index: 8, value: 32.16});
+
+    println!("{}", to_string_sparse(&sparse_vector).expect("None"));
     add(&mut sparse_vector, Data {
         index: 44,
         value: 64.56,
     });
-    println!("{}", to_string(&sparse_vector).expect("None"));
-    let length = get_vector_length(&sparse_vector);
-    println!("{}", length);
+    println!("{}", to_string_sparse(&sparse_vector).expect("None"));
+
+    delete(&mut sparse_vector, 43);
+    println!("{}\n{}\n",
+             to_string_sparse(&sparse_vector).expect("None"), to_string_dense(&sparse_vector).expect("None")
+    );
+
 }
 fn add(sparse_vector: &mut Vec<Data>, data: Data) {
     let vector_index: Option<usize> = get_vector_index(&sparse_vector, data.index);
@@ -74,18 +62,34 @@ fn get_element(sparse_vector: &mut Vec<Data>, data_index: usize) -> f64 {
     let vector_index = vector_index.unwrap();
     return sparse_vector[vector_index].value;
 }
-
-fn to_string(sparse_vector: &Vec<Data>) -> Option<String> {
+fn to_string_sparse(sparse_vector: &Vec<Data>) -> Option<String> {
     if sparse_vector.is_empty() {
         return None;
     }
-
     let mut sparse_vector_string: String = String::from("[");
     for element in sparse_vector {
         sparse_vector_string += format!("({},{}), ",
                                         element.index.to_string().as_str(),
                                         element.value.to_string().as_str()
         ).as_str();
+    }
+    sparse_vector_string += ",";
+    Some(sparse_vector_string.replace(", ,","]"))
+}
+fn to_string_dense(sparse_vector: &Vec<Data>) -> Option<String> {
+    if sparse_vector.is_empty() {
+        return None;
+    }
+    let mut sparse_vector_string: String = String::from("[");
+    let mut last_index: usize = 0;
+
+    for element in sparse_vector {
+        let mut zero_values = String::new();
+        for i in 0 .. element.index - last_index {
+            zero_values += "0.0, ";
+        }
+        last_index = element.index;
+        sparse_vector_string += format!("{}{}, ", zero_values, element.value.to_string().as_str()).as_str();
     }
     sparse_vector_string += ",";
     Some(sparse_vector_string.replace(", ,","]"))
